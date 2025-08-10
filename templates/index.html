@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommender</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Book Recommendation System</h1>
+        <form method="POST" action="/recommend">
+            <div class="form-group">
+                <label for="book_title">Select a Book:</label>
+                <select name="book_title" id="book_title" required>
+                    <option value="">-- Select a Book --</option>
+                    {% for title in book_titles %}
+                        <option value="{{ title }}">{{ title[:50] }}{% if title|length > 50 %}...{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        {% if recommendation %}
+        <div class="results">
+            <h2>Recommendations for "{{ recommendation[0] }}"</h2>
+            <div class="book-list">
+                {% for book in recommendation[1] %}
+                <div class="book">
+                    <div class="book-title">{{ book[0] }}</div>
+                    <div class="book-similarity">Similarity score: {{ "%.2f"|format(book[1]) }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
